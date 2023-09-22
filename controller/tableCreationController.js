@@ -307,6 +307,43 @@ module.exports = {
         }
     },
 
+    DropTables: async function(req,res,next){
+        let connection;
+        try{
+            connection = await getConnection();
+            
+
+            await connection.execute(`DROP Trigger DeletePersonOrdersTrigger`);
+            await connection.execute(`DROP Trigger UpdateTotalPriceTrigger`);
+            await connection.execute(`DROP Trigger CalculateTotalPriceTrigger`);
+            await connection.execute(`DROP Trigger UpdateTotalTrigger`);
+            await connection.execute(`DROP PROCEDURE DeleteDesertAndOrders`);
+            await connection.execute(`DROP TABLE Orders`);
+            await connection.execute(`DROP TABLE Deserts`);
+            await connection.execute(`DROP TABLE Person`);
+            
+
+            res.status(202).send("All Table Dropped successfully");
+            // next();
+
+        }
+        catch(error){
+
+            console.log("Error executing SQL query:" ,error)
+            res.status(500).send('Internal Server Error');
+        }
+        finally{
+            if(connection){
+                try{
+                    await connection.close();
+                }
+                catch(error){
+                    console.log("Error closing database connection:", error);
+                }
+            }
+        }
+    },
+
     testConnection : async function(req,res){
         let connection;
         try{

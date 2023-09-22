@@ -9,4 +9,6 @@ router.post("/", tableCreationController.CreateDesertsTable , tableCreationContr
 
 router.post("/testConnection", tableCreationController.testConnection);
 
+router.post("/dropTables", tableCreationController.DropTables);
+
 module.exports = router;
